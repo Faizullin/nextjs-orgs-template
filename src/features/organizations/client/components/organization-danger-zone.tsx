@@ -30,7 +30,11 @@ export function OrganizationDangerZone({
   const isOwner = currentUserRole === OrgRole.OWNER;
 
   const afterLeaving = async () => {
-    await utils.organization.list.invalidate();
+    await Promise.all([
+      utils.organization.list.invalidate(),
+      utils.organization.listPaginated.invalidate(),
+      utils.organization.search.invalidate(),
+    ]);
     router.push("/dashboard/orgs");
   };
 
@@ -41,44 +45,40 @@ export function OrganizationDangerZone({
   const members = trpc.organization.listMembers.useQuery({ organizationId }, { enabled: isOwner });
 
   const handleDelete = async () => {
-    await confirm({
+    const ok = await confirm({
       title: "Delete this organization?",
       description:
         "Every membership goes with it. This cannot be undone, and the slug becomes available to anyone.",
       confirmLabel: "Delete organization",
       destructive: true,
-      // Passing `onConfirm` keeps the dialog open and spinning until the
-      // mutation settles, so a failure stays visible.
-      onConfirm: async () => {
-        try {
-          await deleteMutation.mutateAsync({ id: organizationId });
-          toast.success("Organization deleted");
-          await afterLeaving();
-        } catch (e) {
-          toast.error(e instanceof Error ? e.message : "Delete failed");
-          throw e;
-        }
-      },
     });
+    if (!ok) return;
+
+    try {
+      await deleteMutation.mutateAsync({ id: organizationId });
+      toast.success("Organization deleted");
+      await afterLeaving();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Delete failed");
+    }
   };
 
   const handleLeave = async () => {
-    await confirm({
+    const ok = await confirm({
       title: "Leave this organization?",
       description: "You lose access immediately. An owner or admin would have to add you back.",
       confirmLabel: "Leave",
       destructive: true,
-      onConfirm: async () => {
-        try {
-          await leaveMutation.mutateAsync({ organizationId });
-          toast.success("You left the organization");
-          await afterLeaving();
-        } catch (e) {
-          toast.error(e instanceof Error ? e.message : "Could not leave");
-          throw e;
-        }
-      },
     });
+    if (!ok) return;
+
+    try {
+      await leaveMutation.mutateAsync({ organizationId });
+      toast.success("You left the organization");
+      await afterLeaving();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not leave");
+    }
   };
 
   const handleTransfer = async () => {
@@ -118,6 +118,8 @@ export function OrganizationDangerZone({
         utils.organization.getById.invalidate({ id: organizationId }),
         utils.organization.listMembers.invalidate({ organizationId }),
         utils.organization.list.invalidate(),
+        utils.organization.listPaginated.invalidate(),
+        utils.organization.search.invalidate(),
       ]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Transfer failed");

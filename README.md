@@ -20,12 +20,17 @@ build rather than surfacing as `undefined` at runtime.
 
 1. Create an application at [dashboard.clerk.com](https://dashboard.clerk.com)
    and copy the publishable and secret keys into `.env`.
-2. Add a webhook endpoint pointing at `<public-url>/api/webhooks/clerk`,
+2. Start a tunnel, because Clerk cannot reach `localhost`:
+
+   ```bash
+   npm run tunnel
+   ```
+
+3. Add a webhook endpoint pointing at
+   `https://nextjs-demo-template-tunnel-web.loca.lt/api/webhooks/clerk`,
    subscribed to `user.created`, `user.updated`, `user.deleted` and
    `session.created`. Copy its signing secret into
    `CLERK_WEBHOOK_SIGNING_SECRET`.
-3. In development the endpoint needs a tunnel — `ngrok http 3000` or the Clerk
-   CLI — because Clerk cannot reach `localhost`.
 
 Until the webhook fires there is no `UserAccount` row, and
 `user.getCurrent` answers `NOT_FOUND`. `session.created` is the safety net: it

@@ -73,6 +73,8 @@ export const OrganizationDialog = NiceModal.create(
     const close = async () => {
       await Promise.all([
         utils.organization.list.invalidate(),
+        utils.organization.listPaginated.invalidate(),
+        utils.organization.search.invalidate(),
         isEdit && organizationId
           ? utils.organization.getById.invalidate({ id: organizationId })
           : Promise.resolve(),

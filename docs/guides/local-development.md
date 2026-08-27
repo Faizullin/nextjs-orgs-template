@@ -4,6 +4,7 @@
 
 ```bash
 npm run dev      # next dev --turbopack
+npm run tunnel   # public URL for Clerk webhooks — see below
 npm run build    # next build --turbopack
 npm run lint
 npx tsc --noEmit # type check on its own
@@ -60,15 +61,41 @@ which is why it is absent here).
 
 ## Receiving webhooks locally
 
-Clerk needs a public URL to reach `/api/webhooks/clerk`:
+Clerk needs a public URL to reach `/api/webhooks/clerk` — it cannot reach
+`localhost`. This project uses [localtunnel](https://theboroer.github.io/localtunnel-www/)
+with a fixed subdomain:
 
 ```bash
-ngrok http 3000          # or: lt --port 3000
+npm run tunnel
+# which is: npx localtunnel --subdomain nextjs-demo-template-tunnel-web --port 3000
+# installed globally (npm i -g localtunnel), the same thing is:
+lt --subdomain nextjs-demo-template-tunnel-web --port 3000
 ```
 
-Point the endpoint at the tunnel and keep `CLERK_WEBHOOK_SIGNING_SECRET` in
-sync — the route verifies the signature, so a stale secret fails closed rather
-than silently accepting.
+Then point the Clerk webhook endpoint at:
+
+```
+https://nextjs-demo-template-tunnel-web.loca.lt/api/webhooks/clerk
+```
+
+The fixed `--subdomain` is the point: the URL survives a restart, so the Clerk
+endpoint is configured once instead of re-pasted every session. It is
+first-come-first-served across all localtunnel users, so if the name is taken
+`lt` silently hands you a random subdomain — read the URL it prints and check
+it is the one above before assuming webhooks are arriving.
+
+Keep `CLERK_WEBHOOK_SIGNING_SECRET` in sync with that endpoint. The route
+verifies the signature, so a stale secret fails closed rather than silently
+accepting.
+
+Two localtunnel quirks worth knowing:
+
+- The **first request from a browser** shows an interstitial page asking for
+  your public IP as a password. Clerk's POSTs are not browsers and go straight
+  through, so this only affects opening the URL by hand.
+- The tunnel drops on network changes without exiting. If webhooks stop
+  arriving, restart `lt` before suspecting the code — Clerk's dashboard shows
+  the failed attempts under the endpoint.
 
 Subscribe to `user.created`, `user.updated`, `user.deleted` and
 `session.created`. Until one fires there is no `UserAccount` row and

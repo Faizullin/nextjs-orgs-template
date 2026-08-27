@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
+    "tunnel": "npx localtunnel --subdomain nextjs-demo-template-tunnel-web --port 3000",
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
