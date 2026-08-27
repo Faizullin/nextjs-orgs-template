@@ -1,0 +1,22 @@
+// identity
+//
+// Who the caller is. Authentication itself belongs to Clerk; `uid` is the
+// Clerk subject and the only join between the two systems. Rows are created
+// by the Clerk webhook (`src/app/api/webhooks/clerk/route.ts`), never by a
+// sign-up form here.
+
+model UserAccount {
+  id        Int      @id @default(autoincrement())
+  uid       String   @unique
+  username  String   @unique
+  email     String   @unique
+  role      String   @default("USER")
+  provider  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedOrganizations Organization[]       @relation("OrganizationOwner")
+  memberships        OrganizationMember[]
+
+  @@map("user_accounts")
+}

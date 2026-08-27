@@ -1,0 +1,13 @@
+// Schema root: generator and datasource only.
+// Every other file in this folder is one domain. Prisma concatenates them,
+// so a relation may cross files freely — the split is for readers, not the
+// engine.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}

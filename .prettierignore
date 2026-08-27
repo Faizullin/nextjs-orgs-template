@@ -1,0 +1,19 @@
+node_modules
+.next
+out
+build
+dist
+public
+coverage
+.env*
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Markdown and documentation
+*.md
+*.mdx
+docs/**
+
+# Prisma generated client
+src/generated/**
+prisma/generated/**
