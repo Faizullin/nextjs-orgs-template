@@ -84,4 +84,3 @@ export const ConfirmDialog = NiceModal.create(
 export function confirm(props: ConfirmDialogProps): Promise<boolean> {
   return NiceModal.show(ConfirmDialog, props) as Promise<boolean>;
 }
-

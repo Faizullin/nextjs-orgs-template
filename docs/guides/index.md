@@ -15,5 +15,11 @@ guide.
 | [ui-patterns.md](ui-patterns.md) | building a form, list, dialog or combobox |
 | [local-development.md](local-development.md) | setting up, running scripts, webhooks, the database |
 
+`npm test` runs `node:test` through tsx over `src/**/*.test.ts`.
+`features/organizations/model/organization.test.ts` is the worked example, and
+`model/` is the half worth testing: those functions decide what the router
+permits *and* what the UI offers, so a disagreement between them is a button
+that 403s.
+
 The [README](../../README.md) is the short version of all three: what is in the
 template, and how to start it.

@@ -15,6 +15,10 @@ import { trpc } from "@/utils/trpc";
  *
  * Each one goes through `confirm()`; transfer additionally goes through
  * `selectOne()` — two shared dialogs, no local dialog state in this file.
+ *
+ * The dialog is awaited, the mutation is not: confirming is a question, so it
+ * blocks, while the outcome is reported by the mutation's own callbacks like
+ * every other mutation in the template.
  */
 export function OrganizationDangerZone({
   organizationId,
@@ -38,9 +42,35 @@ export function OrganizationDangerZone({
     router.push("/dashboard/orgs");
   };
 
-  const deleteMutation = trpc.organization.delete.useMutation();
-  const leaveMutation = trpc.organization.leave.useMutation();
-  const transferMutation = trpc.organization.transferOwnership.useMutation();
+  const deleteMutation = trpc.organization.delete.useMutation({
+    onSuccess: async () => {
+      toast.success("Organization deleted");
+      await afterLeaving();
+    },
+    onError: (e) => toast.error(e.message),
+  });
+
+  const leaveMutation = trpc.organization.leave.useMutation({
+    onSuccess: async () => {
+      toast.success("You left the organization");
+      await afterLeaving();
+    },
+    onError: (e) => toast.error(e.message),
+  });
+
+  const transferMutation = trpc.organization.transferOwnership.useMutation({
+    onSuccess: async () => {
+      toast.success("Ownership transferred");
+      await Promise.all([
+        utils.organization.getById.invalidate({ id: organizationId }),
+        utils.organization.listMembers.invalidate({ organizationId }),
+        utils.organization.list.invalidate(),
+        utils.organization.listPaginated.invalidate(),
+        utils.organization.search.invalidate(),
+      ]);
+    },
+    onError: (e) => toast.error(e.message),
+  });
 
   const members = trpc.organization.listMembers.useQuery({ organizationId }, { enabled: isOwner });
 
@@ -54,13 +84,7 @@ export function OrganizationDangerZone({
     });
     if (!ok) return;
 
-    try {
-      await deleteMutation.mutateAsync({ id: organizationId });
-      toast.success("Organization deleted");
-      await afterLeaving();
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Delete failed");
-    }
+    deleteMutation.mutate({ id: organizationId });
   };
 
   const handleLeave = async () => {
@@ -72,13 +96,7 @@ export function OrganizationDangerZone({
     });
     if (!ok) return;
 
-    try {
-      await leaveMutation.mutateAsync({ organizationId });
-      toast.success("You left the organization");
-      await afterLeaving();
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not leave");
-    }
+    leaveMutation.mutate({ organizationId });
   };
 
   const handleTransfer = async () => {
@@ -111,19 +129,7 @@ export function OrganizationDangerZone({
     });
     if (!ok) return;
 
-    try {
-      await transferMutation.mutateAsync({ organizationId, toUserId: picked.id });
-      toast.success("Ownership transferred");
-      await Promise.all([
-        utils.organization.getById.invalidate({ id: organizationId }),
-        utils.organization.listMembers.invalidate({ organizationId }),
-        utils.organization.list.invalidate(),
-        utils.organization.listPaginated.invalidate(),
-        utils.organization.search.invalidate(),
-      ]);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Transfer failed");
-    }
+    transferMutation.mutate({ organizationId, toUserId: picked.id });
   };
 
   return (

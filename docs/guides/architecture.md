@@ -66,6 +66,11 @@ is what makes standalone scripts awkward — see
 A feature with nothing genuinely shared has no `model/` and no root barrel. That
 is deliberate: an empty barrel asserts a sharing that does not exist.
 
+**Client components live in `client/components/` behind a `client/index.ts`.**
+Both features do this, so a page imports `@/features/organizations/client` and
+never a file path inside it — which is what lets a component be renamed or
+split without touching the routes that render it.
+
 ### What goes in `model/`
 
 Anything both sides need to agree on. In practice that is three things:

@@ -1,4 +1,4 @@
-import { CurrentUserCard } from "@/features/identity/client/current-user-card";
+import { CurrentUserCard } from "@/features/identity/client";
 
 export default function DashboardPage() {
   return (
