@@ -1,4 +1,11 @@
-import { Building2, ChevronLeft, LayoutDashboard, Settings, Users, type LucideIcon } from "lucide-react";
+import {
+  Building2,
+  ChevronLeft,
+  LayoutDashboard,
+  Settings,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { UserRole } from "@/features/identity";
 import { ORG_FEATURE_REGISTRY } from "@/features/organizations/model";
 
@@ -69,7 +76,7 @@ const ORG_ICONS: Record<string, LucideIcon> = {
 
 export function organizationNavItems(organizationId: number): NavGroup[] {
   const base = `/dashboard/orgs/${organizationId}`;
-  
+
   const dynamicItems = Object.values(ORG_FEATURE_REGISTRY).map((feature) => ({
     title: feature.label,
     url: feature.segment ? `${base}/${feature.segment}` : base,
@@ -79,9 +86,7 @@ export function organizationNavItems(organizationId: number): NavGroup[] {
   return [
     {
       id: "back",
-      items: [
-        { title: "All Organizations", url: "/dashboard/orgs", icon: ChevronLeft },
-      ],
+      items: [{ title: "All Organizations", url: "/dashboard/orgs", icon: ChevronLeft }],
     },
     {
       id: "organization",

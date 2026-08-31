@@ -15,8 +15,8 @@ export interface OrgFeatureDefinition {
   segment: string;
 }
 
-/** 
- * Keys represent the distinct feature identifiers. 
+/**
+ * Keys represent the distinct feature identifiers.
  * Add new features here to have them automatically appear in navigation.
  */
 export const ORG_FEATURE_REGISTRY = {

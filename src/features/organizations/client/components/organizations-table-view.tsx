@@ -31,7 +31,7 @@ import type { GeneralRouterOutputs } from "@/server/types";
 import { trpc } from "@/utils/trpc";
 import { OrganizationDialog } from "./organization-dialog";
 
-type OrganizationRow = GeneralRouterOutputs["organization"]["listPaginated"]["items"][number];
+type OrganizationRow = GeneralRouterOutputs["organization"]["list"]["items"][number];
 
 const ROLE_ICONS: Record<OrgRole, typeof User> = {
   OWNER: Shield,
