@@ -1,5 +1,6 @@
-import { Building2, LayoutDashboard, Settings, Users, type LucideIcon } from "lucide-react";
+import { Building2, ChevronLeft, LayoutDashboard, Settings, Users, type LucideIcon } from "lucide-react";
 import { UserRole } from "@/features/identity";
+import { ORG_FEATURE_REGISTRY } from "@/features/organizations/model";
 
 /**
  * Sidebar navigation, as data.
@@ -60,17 +61,32 @@ export const accountNavItems: NavGroup[] = [
  * url carries the id — building them here keeps the id in one place rather
  * than in each nav component.
  */
+const ORG_ICONS: Record<string, LucideIcon> = {
+  LayoutDashboard,
+  Users,
+  Settings,
+};
+
 export function organizationNavItems(organizationId: number): NavGroup[] {
   const base = `/dashboard/orgs/${organizationId}`;
+  
+  const dynamicItems = Object.values(ORG_FEATURE_REGISTRY).map((feature) => ({
+    title: feature.label,
+    url: feature.segment ? `${base}/${feature.segment}` : base,
+    icon: ORG_ICONS[feature.icon],
+  }));
+
   return [
+    {
+      id: "back",
+      items: [
+        { title: "All Organizations", url: "/dashboard/orgs", icon: ChevronLeft },
+      ],
+    },
     {
       id: "organization",
       label: "Organization",
-      items: [
-        { title: "Overview", url: base, icon: LayoutDashboard },
-        { title: "Members", url: `${base}/members`, icon: Users },
-        { title: "Settings", url: `${base}/settings`, icon: Settings },
-      ],
+      items: dynamicItems,
     },
   ];
 }
