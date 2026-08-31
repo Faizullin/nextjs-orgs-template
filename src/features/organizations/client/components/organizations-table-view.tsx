@@ -48,15 +48,11 @@ const ROLE_BADGE: Record<OrgRole, "default" | "secondary" | "outline"> = {
 /**
  * The organizations list, as a `DataTable`.
  *
- * The table runs in manual mode — `useDataTable` keeps page, sort and every
- * filter in the URL, and `organization.listPaginated` does the work. That is
- * what makes a filtered view shareable: the URL *is* the state, so a link to
- * "orgs I own, sorted by newest" reopens exactly that.
- *
- * A column becomes filterable by setting `enableColumnFilter` plus a `meta`
- * block; the toolbar reads `meta.variant` and renders the matching control
- * (`text` → an input, `multiSelect` → a faceted popover). Nothing here
- * registers a filter component by hand.
+ * `useDataTable` runs in manual mode, so paging, sorting and filtering all
+ * happen here rather than in the browser. It queries `OrganizationMember`
+ * rather than `Organization` because the caller's own role is both a column
+ * and a filter — reading it from the membership row means one query instead
+ * of a list plus a per-row lookup.
  */
 export function OrganizationsTableView() {
   const [{ page, perPage, sort, name, slug, role }] = useOrganizationTableParams();
@@ -74,7 +70,7 @@ export function OrganizationsTableView() {
     [page, perPage, sort, name, slug, role]
   );
 
-  const { data, isLoading } = trpc.organization.listPaginated.useQuery(input, {
+  const { data, isLoading } = trpc.organization.list.useQuery(input, {
     // Keeps the previous page on screen while the next one loads, instead of
     // collapsing the table to a skeleton on every page change.
     placeholderData: (prev) => prev,

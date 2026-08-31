@@ -54,8 +54,8 @@ export function MemberTable({
     await Promise.all([
       utils.organization.listMembers.invalidate({ organizationId }),
       utils.organization.getById.invalidate({ id: organizationId }),
+      utils.organization.listMine.invalidate(),
       utils.organization.list.invalidate(),
-      utils.organization.listPaginated.invalidate(),
     ]);
   };
 

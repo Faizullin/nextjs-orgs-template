@@ -35,7 +35,7 @@ export function OrganizationSwitcher() {
   const { isMobile } = useSidebar();
 
   const organizationId = params?.orgId ? Number(params.orgId) : undefined;
-  const organizations = trpc.organization.list.useQuery(undefined, {
+  const organizations = trpc.organization.listMine.useQuery(undefined, {
     // The shell renders on every page; refetching this on each navigation is
     // noise.
     staleTime: 60_000,

@@ -19,7 +19,7 @@ import { OrganizationsTableView } from "./organizations-table-view";
  * second question; it is already cached by the sidebar switcher.
  */
 export function OrganizationList() {
-  const { data, isLoading } = trpc.organization.list.useQuery(undefined, {
+  const { data, isLoading } = trpc.organization.listMine.useQuery(undefined, {
     staleTime: 60_000,
   });
 

@@ -35,8 +35,8 @@ export function OrganizationDangerZone({
 
   const afterLeaving = async () => {
     await Promise.all([
+      utils.organization.listMine.invalidate(),
       utils.organization.list.invalidate(),
-      utils.organization.listPaginated.invalidate(),
       utils.organization.search.invalidate(),
     ]);
     router.push("/dashboard/orgs");
@@ -64,8 +64,8 @@ export function OrganizationDangerZone({
       await Promise.all([
         utils.organization.getById.invalidate({ id: organizationId }),
         utils.organization.listMembers.invalidate({ organizationId }),
+        utils.organization.listMine.invalidate(),
         utils.organization.list.invalidate(),
-        utils.organization.listPaginated.invalidate(),
         utils.organization.search.invalidate(),
       ]);
     },

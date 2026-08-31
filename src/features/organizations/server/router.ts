@@ -38,7 +38,7 @@ export const organizationRouter = createTRPCRouter({
   }),
 
   /** Every organization the caller belongs to, with their role in each. */
-  list: protectedProcedure.query(async ({ ctx }) => {
+  listMine: protectedProcedure.query(async ({ ctx }) => {
     const user = await requireUser(ctx);
 
     const memberships = await ctx.db.organizationMember.findMany({
@@ -65,7 +65,7 @@ export const organizationRouter = createTRPCRouter({
    * and a filter — reading it from the membership row means one query instead
    * of a list plus a per-row lookup.
    */
-  listPaginated: protectedProcedure.input(listOrganizationsSchema).query(async ({ ctx, input }) => {
+  list: protectedProcedure.input(listOrganizationsSchema).query(async ({ ctx, input }) => {
     const user = await requireUser(ctx);
     const { filter, orderBy, pagination } = input;
 
