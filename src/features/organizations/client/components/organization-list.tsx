@@ -12,10 +12,10 @@ import { OrganizationsTableView } from "./organizations-table-view";
 /**
  * The organizations screen: an empty state, or the table.
  *
- * The split needs its own query. `listPaginated` returning nothing means
+ * The split needs its own query. `list` returning nothing means
  * "nothing matched" — which is not the same as "you have no organizations",
  * and showing "create your first" to someone who has filtered themselves into
- * an empty page is how people conclude their data is gone. `list` answers the
+ * an empty page is how people conclude their data is gone. `listMine` answers the
  * second question; it is already cached by the sidebar switcher.
  */
 export function OrganizationList() {

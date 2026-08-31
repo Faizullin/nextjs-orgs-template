@@ -108,7 +108,7 @@ It requires `<NuqsAdapter>` in the root layout — already there.
 Three pieces, in this order:
 
 1. **A procedure** taking `{ filter, orderBy, pagination }` and returning
-   `{ items, total, meta }`. `organization.listPaginated` is the reference, and
+   `{ items, total, meta }`. `organization.list` is the reference, and
    `listOrganizationsSchema` in `model/` is the contract between it and the
    table.
 2. **Columns**, where a `meta` block is what makes a column filterable — the
@@ -182,7 +182,7 @@ hand-edited `?sort=` falls back to the default ordering rather than throwing.
 "Nothing matched your filter" and "you have nothing yet" are different
 messages, and the second is the one people misread as breakage. `DataTable`
 renders "No results." for the first. The second needs its own check —
-`organization-list.tsx` asks `organization.list` whether the person has any
+`organization-list.tsx` asks `organization.listMine` whether the person has any
 organizations *at all* before deciding which to show.
 
 ---

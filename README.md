@@ -9,7 +9,7 @@ from `web_backend` without any of its domain code.
 ```bash
 npm install
 cp .env.example .env       # fill in the Clerk keys
-npx prisma migrate dev     # creates prisma/dev.db
+npx prisma migrate dev     # creates dev.db
 npm run dev
 ```
 
@@ -38,7 +38,7 @@ recreates a row for anyone who signed up while the endpoint was unreachable.
 
 ### Database
 
-SQLite, so there is no service to run — the whole database is `prisma/dev.db`.
+SQLite, so there is no service to run — the whole database is `dev.db`.
 
 ```bash
 npm run db:migrate   # create + apply a migration

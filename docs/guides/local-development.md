@@ -21,7 +21,7 @@ required variables.
 
 ## Database
 
-SQLite, so there is no service to run — the whole database is `prisma/dev.db`,
+SQLite, so there is no service to run — the whole database is `dev.db`,
 and deleting it is a valid reset.
 
 ```bash
@@ -164,9 +164,9 @@ testing.
 
 ## Backups
 
-`prisma/dev.db` is one file: copy it. Do it before any migration that drops a
+`dev.db` is one file: copy it. Do it before any migration that drops a
 column or a table.
 
-**Write the copy outside the repo.** `.gitignore` covers `prisma/*.db`, but a
+**Write the copy outside the repo.** `.gitignore` covers `dev.db` and `prisma/*.db`, but a
 dump moved somewhere else is one `git add -f` away from being committed, and it
 contains every user row.
