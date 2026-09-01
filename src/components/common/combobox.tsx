@@ -149,18 +149,24 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>) {
 
   return (
     <Popover open={open} onOpenChange={setOpen} modal>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          disabled={disabled}
-          className={cn("w-full justify-between", !hasValue && "text-muted-foreground", className)}
-        >
-          <span className="truncate">{label}</span>
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            disabled={disabled}
+            className={cn(
+              "w-full justify-between",
+              !hasValue && "text-muted-foreground",
+              className
+            )}
+          />
+        }
+      >
+        <span className="truncate">{label}</span>
+        <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
       </PopoverTrigger>
 
       <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
@@ -220,6 +226,7 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>) {
                 </CommandItem>
               ))}
 
+              {/* cmdk, not Base UI — `CommandItem` still takes `asChild`. */}
               {canLoadMore && options.length > 0 && (
                 <CommandItem asChild>
                   <Button

@@ -17,6 +17,7 @@
     "test": "tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
+    "@base-ui/react": "^1.7.0",
     "@clerk/nextjs": "^7.8.2",
     "@ebay/nice-modal-react": "^1.2.13",
     "@hookform/resolvers": "^5.2.2",
@@ -38,7 +39,6 @@
     "next": "15.5.9",
     "next-themes": "^0.4.6",
     "nuqs": "^2.10.1",
-    "radix-ui": "^1.6.7",
     "react": "^19.2.8",
     "react-day-picker": "^10.0.1",
     "react-dom": "^19.2.8",

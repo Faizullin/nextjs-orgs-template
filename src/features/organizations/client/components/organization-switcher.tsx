@@ -49,28 +49,30 @@ export function OrganizationSwitcher() {
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <Building2 className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                {organizations.isLoading && organizationId ? (
-                  <Skeleton className="h-4 w-24" />
-                ) : (
-                  <>
-                    <span className="truncate font-semibold">{current?.name ?? "Dashboard"}</span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      {current ? "Organization" : "All organizations"}
-                    </span>
-                  </>
-                )}
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              />
+            }
+          >
+            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              <Building2 className="size-4" />
+            </div>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              {organizations.isLoading && organizationId ? (
+                <Skeleton className="h-4 w-24" />
+              ) : (
+                <>
+                  <span className="truncate font-semibold">{current?.name ?? "Dashboard"}</span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {current ? "Organization" : "All organizations"}
+                  </span>
+                </>
+              )}
+            </div>
+            <ChevronsUpDown className="ml-auto size-4" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
@@ -84,11 +86,13 @@ export function OrganizationSwitcher() {
             </DropdownMenuLabel>
 
             {organizations.data?.map((org) => (
-              <DropdownMenuItem key={org.id} asChild className="gap-2 p-2">
-                <Link href={`/dashboard/orgs/${org.id}`}>
-                  <span className="flex-1 truncate">{org.name}</span>
-                  {org.id === organizationId && <Check className="size-4" />}
-                </Link>
+              <DropdownMenuItem
+                key={org.id}
+                className="gap-2 p-2"
+                render={<Link href={`/dashboard/orgs/${org.id}`} />}
+              >
+                <span className="flex-1 truncate">{org.name}</span>
+                {org.id === organizationId && <Check className="size-4" />}
               </DropdownMenuItem>
             ))}
 

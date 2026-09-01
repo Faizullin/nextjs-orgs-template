@@ -68,16 +68,16 @@ export function NavMain({ items }: { readonly items: readonly NavGroup[] }) {
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
-                        asChild
                         aria-disabled={item.comingSoon}
                         tooltip={item.title}
                         isActive={isItemActive(item)}
+                        render={
+                          <Link href={item.url} target={item.newTab ? "_blank" : undefined} />
+                        }
                       >
-                        <Link href={item.url} target={item.newTab ? "_blank" : undefined}>
-                          {item.icon && <item.icon />}
-                          <span>{item.title}</span>
-                          {item.comingSoon && <ComingSoon />}
-                        </Link>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                        {item.comingSoon && <ComingSoon />}
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
@@ -87,27 +87,32 @@ export function NavMain({ items }: { readonly items: readonly NavGroup[] }) {
                   return (
                     <SidebarMenuItem key={item.title}>
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <SidebarMenuButton
-                            disabled={item.comingSoon}
-                            tooltip={item.title}
-                            isActive={isItemActive(item)}
-                          >
-                            {item.icon && <item.icon />}
-                            <span>{item.title}</span>
-                            <ChevronRight />
-                          </SidebarMenuButton>
+                        <DropdownMenuTrigger
+                          render={
+                            <SidebarMenuButton
+                              disabled={item.comingSoon}
+                              tooltip={item.title}
+                              isActive={isItemActive(item)}
+                            />
+                          }
+                        >
+                          {item.icon && <item.icon />}
+                          <span>{item.title}</span>
+                          <ChevronRight />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent side="right" align="start" className="w-50">
                           {item.subItems.map((subItem) => (
-                            <DropdownMenuItem key={subItem.title} asChild>
-                              <Link
-                                href={subItem.url}
-                                target={subItem.newTab ? "_blank" : undefined}
-                              >
-                                {subItem.icon && <subItem.icon />}
-                                <span>{subItem.title}</span>
-                              </Link>
+                            <DropdownMenuItem
+                              key={subItem.title}
+                              render={
+                                <Link
+                                  href={subItem.url}
+                                  target={subItem.newTab ? "_blank" : undefined}
+                                />
+                              }
+                            >
+                              {subItem.icon && <subItem.icon />}
+                              <span>{subItem.title}</span>
                             </DropdownMenuItem>
                           ))}
                         </DropdownMenuContent>
@@ -119,41 +124,44 @@ export function NavMain({ items }: { readonly items: readonly NavGroup[] }) {
                 return (
                   <Collapsible
                     key={item.title}
-                    asChild
                     defaultOpen={isSubmenuOpen(item)}
                     className="group/collapsible"
+                    render={<SidebarMenuItem />}
                   >
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
+                    <CollapsibleTrigger
+                      render={
                         <SidebarMenuButton
                           disabled={item.comingSoon}
                           isActive={isItemActive(item)}
                           tooltip={item.title}
-                        >
-                          {item.icon && <item.icon />}
-                          <span>{item.title}</span>
-                          {item.comingSoon && <ComingSoon />}
-                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          {item.subItems.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title}>
-                              <SidebarMenuSubButton asChild isActive={path === subItem.url}>
+                        />
+                      }
+                    >
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                      {item.comingSoon && <ComingSoon />}
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.subItems.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton
+                              isActive={path === subItem.url}
+                              render={
                                 <Link
                                   href={subItem.url}
                                   target={subItem.newTab ? "_blank" : undefined}
-                                >
-                                  {subItem.icon && <subItem.icon />}
-                                  <span>{subItem.title}</span>
-                                </Link>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                          ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    </SidebarMenuItem>
+                                />
+                              }
+                            >
+                              {subItem.icon && <subItem.icon />}
+                              <span>{subItem.title}</span>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
                   </Collapsible>
                 );
               })}

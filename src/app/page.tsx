@@ -20,16 +20,12 @@ export default async function Home() {
 
       <div className="flex gap-3">
         {userId ? (
-          <Button asChild>
-            <Link href="/dashboard">Go to dashboard</Link>
-          </Button>
+          <Button render={<Link href="/dashboard" />}>Go to dashboard</Button>
         ) : (
           <>
-            <Button asChild>
-              <Link href="/sign-in">Sign in</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/sign-up">Create account</Link>
+            <Button render={<Link href="/sign-in" />}>Sign in</Button>
+            <Button render={<Link href="/sign-up" />} variant="outline">
+              Create account
             </Button>
           </>
         )}

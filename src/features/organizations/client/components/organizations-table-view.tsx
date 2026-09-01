@@ -165,20 +165,20 @@ export function OrganizationsTableView() {
           return (
             <div className="text-right">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="size-8 p-0">
-                    <MoreHorizontal className="size-4" />
-                    <span className="sr-only">Actions for {org.name}</span>
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="ghost" size="sm" className="size-8 p-0" />}
+                >
+                  <MoreHorizontal className="size-4" />
+                  <span className="sr-only">Actions for {org.name}</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{org.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={`/dashboard/orgs/${org.id}`}>Open</Link>
+                  <DropdownMenuItem render={<Link href={`/dashboard/orgs/${org.id}`} />}>
+                    Open
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href={`/dashboard/orgs/${org.id}/members`}>Members</Link>
+                  <DropdownMenuItem render={<Link href={`/dashboard/orgs/${org.id}/members`} />}>
+                    Members
                   </DropdownMenuItem>
                   {canEditOrganization(org.currentUserRole) && (
                     <>
