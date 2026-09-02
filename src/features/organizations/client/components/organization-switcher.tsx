@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -53,7 +54,7 @@ export function OrganizationSwitcher() {
             render={
               <SidebarMenuButton
                 size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                className="data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground"
               />
             }
           >
@@ -76,25 +77,29 @@ export function OrganizationSwitcher() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--anchor-width) min-w-56 rounded-lg"
             align="start"
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Organizations
-            </DropdownMenuLabel>
+            {/* Base UI's GroupLabel reads MenuGroupContext, so the label and the
+                items it labels belong inside one Group — Radix required neither. */}
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="text-muted-foreground text-xs">
+                Organizations
+              </DropdownMenuLabel>
 
-            {organizations.data?.map((org) => (
-              <DropdownMenuItem
-                key={org.id}
-                className="gap-2 p-2"
-                render={<Link href={`/dashboard/orgs/${org.id}`} />}
-              >
-                <span className="flex-1 truncate">{org.name}</span>
-                {org.id === organizationId && <Check className="size-4" />}
-              </DropdownMenuItem>
-            ))}
+              {organizations.data?.map((org) => (
+                <DropdownMenuItem
+                  key={org.id}
+                  className="gap-2 p-2"
+                  render={<Link href={`/dashboard/orgs/${org.id}`} />}
+                >
+                  <span className="flex-1 truncate">{org.name}</span>
+                  {org.id === organizationId && <Check className="size-4" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
 
             {organizations.data?.length === 0 && (
               <p className="text-muted-foreground p-2 text-xs">No organizations yet.</p>
@@ -103,7 +108,7 @@ export function OrganizationSwitcher() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="gap-2 p-2"
-              onSelect={() => NiceModal.show(OrganizationDialog, { mode: "create" })}
+              onClick={() => NiceModal.show(OrganizationDialog, { mode: "create" })}
             >
               <Plus className="size-4" />
               <span>New organization</span>

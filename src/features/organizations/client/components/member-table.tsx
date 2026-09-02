@@ -114,7 +114,11 @@ export function MemberTable({
             className="min-w-56 flex-1"
             aria-label="Email of the person to add"
           />
-          <Select value={role} onValueChange={(v) => setRole(v as "ADMIN" | "MEMBER")}>
+          <Select
+            items={ORG_ROLE_LABELS}
+            value={role}
+            onValueChange={(v) => setRole(v as "ADMIN" | "MEMBER")}
+          >
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>

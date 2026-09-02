@@ -17,6 +17,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -172,7 +173,11 @@ export function OrganizationsTableView() {
                   <span className="sr-only">Actions for {org.name}</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{org.name}</DropdownMenuLabel>
+                  {/* Base UI's GroupLabel reads MenuGroupContext — a label
+                      outside a Group throws. Radix had no such requirement. */}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>{org.name}</DropdownMenuLabel>
+                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem render={<Link href={`/dashboard/orgs/${org.id}`} />}>
                     Open
@@ -184,7 +189,7 @@ export function OrganizationsTableView() {
                     <>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
-                        onSelect={() =>
+                        onClick={() =>
                           NiceModal.show(OrganizationDialog, {
                             mode: "edit",
                             organizationId: org.id,

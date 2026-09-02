@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -58,7 +59,7 @@ export function NavUser() {
             render={
               <SidebarMenuButton
                 size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                className="data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground"
               />
             }
           >
@@ -74,21 +75,25 @@ export function NavUser() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--anchor-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              {display.email || "Signed in"}
-            </DropdownMenuLabel>
+            {/* Base UI's GroupLabel reads MenuGroupContext, so a label must sit
+                inside a Group — Radix had no such requirement. */}
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="text-muted-foreground text-xs">
+                {display.email || "Signed in"}
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => openUserProfile()}>
+            <DropdownMenuItem onClick={() => openUserProfile()}>
               <UserCog className="size-4" />
               Manage account
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => signOut(() => router.push("/"))}>
+            <DropdownMenuItem onClick={() => signOut(() => router.push("/"))}>
               <LogOut className="size-4" />
               Sign out
             </DropdownMenuItem>

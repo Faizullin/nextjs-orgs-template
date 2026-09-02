@@ -20,11 +20,15 @@ export default async function Home() {
 
       <div className="flex gap-3">
         {userId ? (
-          <Button render={<Link href="/dashboard" />}>Go to dashboard</Button>
+          <Button nativeButton={false} render={<Link href="/dashboard" />}>
+            Go to dashboard
+          </Button>
         ) : (
           <>
-            <Button render={<Link href="/sign-in" />}>Sign in</Button>
-            <Button render={<Link href="/sign-up" />} variant="outline">
+            <Button nativeButton={false} render={<Link href="/sign-in" />}>
+              Sign in
+            </Button>
+            <Button nativeButton={false} render={<Link href="/sign-up" />} variant="outline">
               Create account
             </Button>
           </>

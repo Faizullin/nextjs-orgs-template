@@ -169,7 +169,7 @@ export function ComboBox<T extends object>(props: ComboBoxProps<T>) {
         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
       </PopoverTrigger>
 
-      <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
+      <PopoverContent className="w-(--anchor-width) p-0" align="start">
         {/* `shouldFilter={false}` — filtering is the server's job here. */}
         <Command shouldFilter={false}>
           <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />

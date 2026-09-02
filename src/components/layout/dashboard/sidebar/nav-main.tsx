@@ -140,7 +140,7 @@ export function NavMain({ items }: { readonly items: readonly NavGroup[] }) {
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                       {item.comingSoon && <ComingSoon />}
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
